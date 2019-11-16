@@ -4,8 +4,8 @@ import CameraView from './CameraView';
 import EventListView from './EventListView';
 
 export default function App() {
-  return <CameraView />;
-  // return <EventListView />;
+  // return <CameraView />;
+  return <EventListView />;
   // <View style={styles.container}>
   //   <Text>Welcome to Facebook IRL</Text>
   // </View>

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { FlatList, StyleSheet, Text, View, Image, ScrollView} from 'react-native';
 import { redBright } from 'ansi-colors';
 import { Card, ListItem, Button, Icon } from 'react-native-elements'
+import LinearGradient from 'react-native-linear-gradient';
 
 const styles = StyleSheet.create({
     container: {
@@ -40,7 +41,8 @@ export default class FlatListBasics extends Component {
                 <Text style={{textAlign:"center"}}>
                     Community Hackathon San Francisco
                 </Text>
-                
+
+
             </Card>
 
             <Card
