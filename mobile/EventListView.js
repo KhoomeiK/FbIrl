@@ -35,39 +35,35 @@ export default class FlatListBasics extends Component {
         return (
             <ScrollView style={styles.scrollView}>
             <Card></Card>
+            {/* <LinearGradient colors={['#4c669f', '#3b5998', '#192f6a']}> */}
             <Card
-                // title='HELLO WORLD'
                 image={require('../mobile/assets/sf.jpg')}>
                 <Text style={{textAlign:"center"}}>
                     Community Hackathon San Francisco
                 </Text>
-
-
             </Card>
+            {/* </LinearGradient> */}
+            
 
             <Card
-                // title='HELLO WORLD'
                 image={require('../mobile/assets/ny.jpg')}>
                 <Text style={{textAlign:"center"}}>
                     Community Hackathon New York
                 </Text>
             </Card>
             <Card
-                // title='HELLO WORLD'
                 image={require('../mobile/assets/chicago.jpg')}>
                 <Text style={{textAlign:"center"}}>
                     Community Hackathon Chicago
                 </Text>
             </Card>
             <Card
-                // title='HELLO WORLD'
                 image={require('../mobile/assets/test.png')}>
                 <Text style={{textAlign:"center"}}>
                     Community Hackathon Antarctica
                 </Text>
             </Card>
             <Card
-                // title='HELLO WORLD'
                 image={require('../mobile/assets/test.png')}>
                 <Text style={{textAlign:"center"}}>
                     Community Hackathon Space
