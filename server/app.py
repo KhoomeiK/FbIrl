@@ -25,8 +25,15 @@ def hello_world():
 
 @app.route('/classify', methods=['POST'])
 def classify():
-    image = request.files['image']
-    pil_image = Image.open(image).resize((IMG_SIZE, IMG_SIZE))
+    image = request.files['photo']
+    pil_image = Image.open(image)
+    print(request)
+    left = int(request.form.get('x'))
+    upper = int(request.form.get('y'))
+    right = int(request.form.get('width')) + left
+    lower = int(request.form.get('height')) + upper 
+    pil_image = pil_image.crop((left, upper, right, lower))
+    pil_image = pil_image.resize((IMG_SIZE, IMG_SIZE))
     img_vec = img_to_vec(pil_image)
     prediction = model.predict([img_vec])[0]
     name = preds_info[prediction]
