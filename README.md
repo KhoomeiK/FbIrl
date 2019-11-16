@@ -1,7 +1,7 @@
 # FbIrl
 
 ## Mobile Todo
-- camera
-- facial recognition
-- face cropping png
+- camera DONE
+- facial recognition DONE
+- face post request png DONE
 - AR card display
