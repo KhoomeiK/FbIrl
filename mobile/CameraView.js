@@ -1,6 +1,6 @@
 import React from 'react';
-
 import { View } from 'react-native';
+import * as WebBrowser from 'expo-web-browser';
 import * as Permissions from 'expo-permissions';
 import { Camera } from 'expo-camera';
 import * as FaceDetector from 'expo-face-detector';
@@ -68,7 +68,7 @@ export default class CameraView extends React.Component {
             }}>
             <Svg height="100%" width="100%">
               {this.state.bounds ?
-                <G>
+                <G onPress={this.state.personData ? async () => await WebBrowser.openBrowserAsync(this.state.personData.link) : null}>
                   <Polyline
                     points={
                       // top left, top right, bottom right, bottom left
@@ -87,37 +87,37 @@ export default class CameraView extends React.Component {
                       <Text fill="white"
                         fontSize="30"
                         fontWeight="bold"
-                        x={this.state.bounds.origin.x + this.state.bounds.size.width - 100}
+                        x={this.state.bounds.origin.x + this.state.bounds.size.width - 60}
                         y={this.state.bounds.origin.y + 200}
                         textAnchor="middle">
                         {this.state.personData.name}
                       </Text>
                       <Text fill="white"
-                        fontSize="20"
-                        x={this.state.bounds.origin.x + this.state.bounds.size.width - 100}
+                        fontSize="18"
+                        x={this.state.bounds.origin.x + this.state.bounds.size.width - 60}
                         y={this.state.bounds.origin.y + 250}
                         textAnchor="middle">
                         {`From: ${this.state.personData.hometown}`}
                       </Text>
                       <Text fill="white"
-                        fontSize="20"
-                        x={this.state.bounds.origin.x + this.state.bounds.size.width - 100}
-                        y={this.state.bounds.origin.y + 300}
-                        textAnchor="middle">
-                        {`Enjoys: ${this.state.personData.likes}`}
-                      </Text>
-                      <Text fill="white"
-                        fontSize="20"
-                        x={this.state.bounds.origin.x + this.state.bounds.size.width - 100}
-                        y={this.state.bounds.origin.y + 350}
+                        fontSize="18"
+                        x={this.state.bounds.origin.x + this.state.bounds.size.width - 60}
+                        y={this.state.bounds.origin.y + 280}
                         textAnchor="middle">
                         {`Contact: ${this.state.personData.email}`}
+                      </Text>
+                      <Text fill="white"
+                        fontSize="18"
+                        x={this.state.bounds.origin.x + this.state.bounds.size.width - 60}
+                        y={this.state.bounds.origin.y + 310}
+                        textAnchor="middle">
+                        {`Enjoys: ${this.state.personData.likes}`}
                       </Text>
                     </G> :
                     <Text fill="white"
                       fontSize="30"
                       fontWeight="bold"
-                      x={this.state.bounds.origin.x + this.state.bounds.size.width - 100}
+                      x={this.state.bounds.origin.x + this.state.bounds.size.width - 60}
                       y={this.state.bounds.origin.y + 200}
                       textAnchor="middle">
                       Loading
@@ -127,7 +127,7 @@ export default class CameraView extends React.Component {
                 null}
             </Svg>
           </Camera>
-        </View>
+        </View >
       );
     }
   }
