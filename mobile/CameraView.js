@@ -4,6 +4,7 @@ import { Text, View } from 'react-native';
 import * as Permissions from 'expo-permissions';
 import { Camera } from 'expo-camera';
 import * as FaceDetector from 'expo-face-detector';
+import Svg, { Polyline, Circle, Rect } from 'react-native-svg';
 import axios from 'axios';
 
 export default class CameraView extends React.Component {
@@ -28,10 +29,9 @@ export default class CameraView extends React.Component {
     }
     else if (obj.faces.length > 0) { // continuing to adjust to new face
       this.setState({ bounds: obj.faces[0].bounds })
-      // console.log(this.state.bounds)
     }
     else if (obj.faces.length === 0 && this.state.seeingFace) { // first time no face visible
-      this.setState({ seeingFace: false })
+      this.setState({ seeingFace: false, bounds: null })
     }
   }
 
@@ -60,8 +60,25 @@ export default class CameraView extends React.Component {
               runClassifications: FaceDetector.Constants.Classifications.none,
               minDetectionInterval: 100,
               tracking: true,
-            }}
-          />
+            }}>
+            <Svg height="100%" width="100%">
+              {this.state.bounds ?
+                <Polyline
+                  points={
+                    // top left, top right, bottom right, bottom left
+                    `${this.state.bounds.origin.x - 100}, ${this.state.bounds.origin.y + 150} 
+      ${this.state.bounds.origin.x + this.state.bounds.size.width + 100}, ${this.state.bounds.origin.y + 150} 
+      ${this.state.bounds.origin.x + this.state.bounds.size.width + 100}, ${this.state.bounds.origin.y + this.state.bounds.size.height + 250} 
+      ${this.state.bounds.origin.x - 100}, ${this.state.bounds.origin.y + this.state.bounds.size.height + 250}`
+                  }
+                  fill="rgb(66,103,178)"
+                  stroke="none"
+                  strokeWidth="0"
+                  fillOpacity="0.8"
+                />
+                : null}
+            </Svg>
+          </Camera>
         </View>
       );
     }
