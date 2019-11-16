@@ -1,9 +1,16 @@
 from flask import Flask, request
 from PIL import Image
-from server.model.dummy_model import Model
+from sklearn.externals import joblib
+import numpy as np
 import json
 
 app = Flask(__name__)
+model = joblib.load('model/classifier.pkl')
+
+
+def img_to_vec(img):
+    return np.array(img).ravel()
+
 
 @app.route('/')
 def hello_world():
@@ -14,9 +21,9 @@ def hello_world():
 def classify():
     image = request.files['image']
     pil_image = Image.open(image)
-
-    model = Model()
-    return json.dumps(model.predict(pil_image))
+    img_vec = img_to_vec(pil_image)
+    prediction = model.predict([img_vec])[0]
+    return {"prediction": prediction}
 
 
 if __name__ == '__main__':
