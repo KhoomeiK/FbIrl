@@ -41,7 +41,11 @@ def classify():
     img_vec = img_to_vec(pil_image)
     prediction = model.predict([img_vec])[0]
     name = preds_info[prediction]
-    return jsonify({"name": name})
+    # fake data for now
+    email = "raguiar1000@gmail.com"
+    hometown = "San Francisco, CA"
+    likes = "Running, Swimming"
+    return jsonify({"name": name, "email": email, "hometown": hometown, "likes": likes})
 
 
 if __name__ == '__main__':
