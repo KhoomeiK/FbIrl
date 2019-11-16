@@ -24,7 +24,7 @@ def horizontal_flip(image_array: ndarray):
 folder_path = 'data'
 
 # the number of file to generate
-num_files_desired = 100
+num_files_desired = 120
 
 images = []
 directories = []
