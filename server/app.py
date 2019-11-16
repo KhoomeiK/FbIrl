@@ -12,9 +12,10 @@ preds_info = {
     3: 'christian',
     4: 'rui'
 }
+IMG_SIZE = 128
 
-def img_to_vec(img):
-    return np.array(img).ravel()[:64116]
+def img_to_vec(img):    
+    return np.array(img).ravel()
 
 
 @app.route('/')
@@ -25,7 +26,7 @@ def hello_world():
 @app.route('/classify', methods=['POST'])
 def classify():
     image = request.files['image']
-    pil_image = Image.open(image)
+    pil_image = Image.open(image).resize((IMG_SIZE, IMG_SIZE))
     img_vec = img_to_vec(pil_image)
     prediction = model.predict([img_vec])[0]
     name = preds_info[prediction]
