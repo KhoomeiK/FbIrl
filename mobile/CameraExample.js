@@ -1,14 +1,39 @@
 import React from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
+
+import { Text, View, Image } from 'react-native';
 import * as Permissions from 'expo-permissions';
 import { Camera } from 'expo-camera';
 import * as FaceDetector from 'expo-face-detector';
+import axios from 'axios';
 
 export default class CameraExample extends React.Component {
   state = {
     hasCameraPermission: null,
     type: Camera.Constants.Type.back,
   };
+
+  handleFaces = async obj => {
+    if (obj.faces.length > 0 && !this.state.seeingFace) { // first time new face
+      this.setState({ bounds: obj.faces[0].bounds, seeingFace: true })
+      let photo = await this.camera.takePictureAsync({ quality: 0.5, base64: true })
+      let content = {
+        photo: photo.base64,
+        x: this.state.bounds.origin.x,
+        y: this.state.bounds.origin.y,
+        width: this.state.bounds.size.width,
+        height: this.state.bounds.size.height
+      }
+      let data = await axios.post('http://bdc01c4b.ngrok.io/classify', content)
+      console.log(data.data)
+    }
+    else if (obj.faces.length > 0) { // continuing to adjust to new face
+      this.setState({ bounds: obj.faces[0].bounds })
+      // console.log(this.state.bounds)
+    }
+    else if (obj.faces.length === 0 && this.state.seeingFace) { // first time no face visible
+      this.setState({ seeingFace: false })
+    }
+  }
 
   async componentDidMount() {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
@@ -21,12 +46,20 @@ export default class CameraExample extends React.Component {
       return <View />;
     } else if (hasCameraPermission === false) {
       return <Text>No access to camera</Text>;
-    } else {
+    }
+    // else if (this.state.captured) { // display captured image
+    //   return <Image
+    //     style={{ width: Math.floor(this.state.captured.width / 5), height: Math.floor(this.state.captured.height / 5) }}
+    //     source={{ uri: this.state.captured.uri }}
+    //   />
+    // }
+    else {
       return (
         <View style={{ flex: 1 }}>
           <Camera
+            ref={ref => { this.camera = ref }}
             style={{ flex: 1 }} ratio='16:9' type={this.state.type}
-            onFacesDetected={faces => console.log(faces)}
+            onFacesDetected={obj => this.handleFaces(obj)}
             faceDetectorSettings={{
               mode: FaceDetector.Constants.Mode.fast,
               detectLandmarks: FaceDetector.Constants.Landmarks.none,
@@ -35,31 +68,6 @@ export default class CameraExample extends React.Component {
               tracking: true,
             }}
           />
-          {/* <Camera style={{ flex: 1 }} ratio='16:9' type={this.state.type}>
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: 'transparent',
-                flexDirection: 'row',
-              }}>
-              <TouchableOpacity
-                style={{
-                  flex: 0.1,
-                  alignSelf: 'flex-end',
-                  alignItems: 'center',
-                }}
-                onPress={() => {
-                  this.setState({
-                    type:
-                      this.state.type === Camera.Constants.Type.back
-                        ? Camera.Constants.Type.front
-                        : Camera.Constants.Type.back,
-                  });
-                }}>
-                <Text style={{ fontSize: 18, marginBottom: 10, color: 'white' }}> Flip </Text>
-              </TouchableOpacity>
-            </View>
-          </Camera> */}
         </View>
       );
     }

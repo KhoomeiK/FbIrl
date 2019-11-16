@@ -1,0 +1,7 @@
+POST {
+    photo: [base64 encoding]
+    x: [x origin of face]
+    y: [y origin of face]
+    height: [length of face from y]
+    width: [length of face from x]
+}
