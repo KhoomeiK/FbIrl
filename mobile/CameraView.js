@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { Text, View, Image } from 'react-native';
+import { Text, View } from 'react-native';
 import * as Permissions from 'expo-permissions';
 import { Camera } from 'expo-camera';
 import * as FaceDetector from 'expo-face-detector';
 import axios from 'axios';
 
-export default class CameraExample extends React.Component {
+export default class CameraView extends React.Component {
   state = {
     hasCameraPermission: null,
     type: Camera.Constants.Type.back,
@@ -47,12 +47,6 @@ export default class CameraExample extends React.Component {
     } else if (hasCameraPermission === false) {
       return <Text>No access to camera</Text>;
     }
-    // else if (this.state.captured) { // display captured image
-    //   return <Image
-    //     style={{ width: Math.floor(this.state.captured.width / 5), height: Math.floor(this.state.captured.height / 5) }}
-    //     source={{ uri: this.state.captured.uri }}
-    //   />
-    // }
     else {
       return (
         <View style={{ flex: 1 }}>
