@@ -10,7 +10,7 @@ import json
 import cv2
 import face_recognition
 import time
-
+from multiprocessing import Process
 
 
 
@@ -63,7 +63,7 @@ adil_face_encoding = face_recognition.face_encodings(picture_of_adil)[0]
 picture_of_rohan = face_recognition.load_image_file("picture_of_rohan.jpg")
 rohan_face_encoding = face_recognition.face_encodings(picture_of_rohan)[0]
 picture_of_christian = face_recognition.load_image_file("picture_of_christian.jpg")
-rohan_face_encoding = face_recognition.face_encodings(picture_of_christian)[0]
+christian_face_encoding = face_recognition.face_encodings(picture_of_christian)[0]
 
 
 @app.route('/')
@@ -90,7 +90,7 @@ def _get_graph_api_details(name):
     likes = content['likes']['data'][-2]['name']
     likes += ", " + content['likes']['data'][-5]['name']
     email = content['email']
-    link = fb_links['name']
+    link = fb_links[name]
     if 'hometown' in content:
         hometown = content['hometown']['name'],
     else:
@@ -99,10 +99,9 @@ def _get_graph_api_details(name):
 
 def get_face_class(face_encoding):
     t0 = time.time()
-#     try:
-    results = face_recognition.face_distance([rui_face_encoding, adil_face_encoding, rohan_face_encoding, picture_of_christian], face_encoding)
+    results = face_recognition.face_distance([rui_face_encoding, adil_face_encoding, rohan_face_encoding, christian_face_encoding], face_encoding)
     t1 = time.time()
-    print("time coomparing", t0-t1)
+    print("time coomparing", t1-t0)
     if results[0] == min(results):
         return 'Rui'
     if results[1] == min(results):
@@ -111,8 +110,6 @@ def get_face_class(face_encoding):
         return 'Rohan'
     if results[3] == min(results):
         return 'Christian'
-#     except Exception:
-#         return 'Rui'
     return 'Rui'
 
 def _get_prediction(json_data):
@@ -127,14 +124,15 @@ def _get_prediction(json_data):
     
     t1 = time.time()
     
-    print("time processing image", t0-t1)
+    print("time processing image", t1-t0)
 
     t0 = time.time()
     pil_image.save('phone_img_before_crop.jpg')
+#     picture = np.array(pil_image)
     picture = face_recognition.load_image_file("phone_img_before_crop.jpg")
     face_encoding = face_recognition.face_encodings(picture)[0]
     t1 = time.time()
-    print("time getting encoding", t0-t1)
+    print("time getting encoding", t1-t0)
     prediction = get_face_class(face_encoding)
     return prediction
 
@@ -142,9 +140,10 @@ def _get_prediction(json_data):
 @app.route('/classify', methods=['POST'])
 def classify():
     json_data = request.get_json(force=True)
+    print("going to get preds")
     name = _get_prediction(json_data)
-    return _get_graph_api_details(name)
-#     return jsonify({"name": name, "email": email_info[name], "hometown": hometown_info[name], "likes": likes_info[name], "link": fb_links[name]})
+#     return _get_graph_api_details(name)
+    return jsonify({"name": name, "email": email_info[name], "hometown": hometown_info[name], "likes": likes_info[name], "link": fb_links[name]})
 
 
 if __name__ == '__main__':
