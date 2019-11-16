@@ -87,21 +87,24 @@ def _get_graph_api_details(name):
     access_token = get_access_token(name)
     r = requests.get("https://graph.facebook.com/me?fields=hometown,likes,email&access_token=" + access_token)
     content = json.loads(r.content)
-    likes = content['likes']['data'][-2]['name']
-    likes += ", " + content['likes']['data'][-5]['name']
-    email = content['email']
+    if 'likes' in content:
+        likes = content['likes']['data'][-2]['name']
+        likes += ", " + content['likes']['data'][-5]['name']
+    else:
+        likes = likes_info[name]
+    if 'email' in content:
+        email = content['email']
+    else:
+        email = email_info[name]
     link = fb_links[name]
     if 'hometown' in content:
         hometown = content['hometown']['name'],
     else:
-        hometown = "Cupertino, CA"
+        hometown = hometown_info[name]
     return jsonify({"name": name, "email": email, "hometown": hometown, "likes": likes, "link": link})
 
 def get_face_class(face_encoding):
-    t0 = time.time()
     results = face_recognition.face_distance([rui_face_encoding, adil_face_encoding, rohan_face_encoding, christian_face_encoding], face_encoding)
-    t1 = time.time()
-    print("time coomparing", t1-t0)
     if results[0] == min(results):
         return 'Rui'
     if results[1] == min(results):
@@ -115,24 +118,14 @@ def get_face_class(face_encoding):
 def _get_prediction(json_data):
     global img_num
     
-    t0 = time.time()
-
     image = json_data['photo']
     decoded_image = base64.b64decode(image)
     bytes_image = BytesIO(decoded_image)
     pil_image = Image.open(bytes_image)
-    
-    t1 = time.time()
-    
-    print("time processing image", t1-t0)
-
-    t0 = time.time()
-    pil_image.save('phone_img_before_crop.jpg')
-#     picture = np.array(pil_image)
-    picture = face_recognition.load_image_file("phone_img_before_crop.jpg")
+#     pil_image.save('phone_img_before_crop.jpg')
+    picture = np.array(pil_image)
+#     picture = face_recognition.load_image_file("phone_img_before_crop.jpg")
     face_encoding = face_recognition.face_encodings(picture)[0]
-    t1 = time.time()
-    print("time getting encoding", t1-t0)
     prediction = get_face_class(face_encoding)
     return prediction
 
@@ -142,7 +135,7 @@ def classify():
     json_data = request.get_json(force=True)
     print("going to get preds")
     name = _get_prediction(json_data)
-#     return _get_graph_api_details(name)
+    return _get_graph_api_details(name)
     return jsonify({"name": name, "email": email_info[name], "hometown": hometown_info[name], "likes": likes_info[name], "link": fb_links[name]})
 
 
