@@ -9,6 +9,7 @@ import requests
 import json
 import cv2
 import face_recognition
+import time
 
 
 
@@ -24,25 +25,29 @@ model = joblib.load('model/classifier.pkl')
 email_info = {
     'Adil': 'adil99@gmail.com',
     'Rui': 'raguiar@gmail.com',
-    'Rohan': 'rohan@gmail.com'
+    'Rohan': 'rohan@gmail.com',
+    'Christian': 'christian@gmail.com'
 }
 
 hometown_info = {
     'Rui': "Palo Alto, CA",
     'Adil': "Vancouver, Canada",
-    'Rohan': 'San Francisco, CA'
+    'Rohan': 'San Francisco, CA',
+    'Christian': 'Beijing, China'
 }
 
 likes_info = {
     'Rui': "Running, Swimming",
     'Adil': "Biking, Hiking",
-    'Rohan': 'Hackathons, Movies, Running'
+    'Rohan': 'Hackathons, Movies, Running',
+    'Christian': 'Making Videos, Soccer'
 }
 
 fb_links = {
     "Rui": "https://www.facebook.com/rui.aguiar.125",
     "Adil": "https://www.facebook.com/4d117",
-    "Rohan": "https://www.facebook.com/profile.php?id=100015096588541"
+    "Rohan": "https://www.facebook.com/profile.php?id=100015096588541",
+    "Christian": "https://www.facebook.com/profile.php?id=100009333463110"
 }
 
 
@@ -57,10 +62,9 @@ picture_of_adil = face_recognition.load_image_file("picture_of_adil.jpg")
 adil_face_encoding = face_recognition.face_encodings(picture_of_adil)[0]
 picture_of_rohan = face_recognition.load_image_file("picture_of_rohan.jpg")
 rohan_face_encoding = face_recognition.face_encodings(picture_of_rohan)[0]
+picture_of_christian = face_recognition.load_image_file("picture_of_christian.jpg")
+rohan_face_encoding = face_recognition.face_encodings(picture_of_christian)[0]
 
-
-# def img_to_vec(img):
-#     return np.array(img).ravel()
 
 @app.route('/')
 def hello_world():
@@ -73,8 +77,10 @@ def get_access_token(name):
         access_token = os.environ['RUI_ACCESS_TOKEN']
     elif name == 'Adil':
         access_token = os.environ['ADIL_ACCESS_TOKEN']
-    else:
+    elif name == 'Rohan':
         access_token = os.environ['ROHAN_ACCESS_TOKEN']
+    elif name == 'Christian':
+        access_token = os.environ['CHRISTIAN_ACCESS_TOKEN']
     return access_token
 
 def _get_graph_api_details(name):
@@ -92,46 +98,43 @@ def _get_graph_api_details(name):
     return jsonify({"name": name, "email": email, "hometown": hometown, "likes": likes, "link": link})
 
 def get_face_class(face_encoding):
-    print(len(face_encoding))
-    print(len(rui_face_encoding))
-    try:
-        is_rui = face_recognition.compare_faces([rui_face_encoding], face_encoding)
-        if is_rui:
-            return 'Rui'
-        is_adil = face_recognition.compare_faces([adil_face_encoding], face_encoding)
-        if is_adil:
-            return 'Adil'
-        is_rohan = face_recognition.compare_faces([rohan_face_encoding], face_encoding)
-        if is_rohan:
-            return 'Rohan'
-    except Exception:
+    t0 = time.time()
+#     try:
+    results = face_recognition.face_distance([rui_face_encoding, adil_face_encoding, rohan_face_encoding, picture_of_christian], face_encoding)
+    t1 = time.time()
+    print("time coomparing", t0-t1)
+    if results[0] == min(results):
         return 'Rui'
+    if results[1] == min(results):
+        return 'Adil'
+    if results[2] == min(results):
+        return 'Rohan'
+    if results[3] == min(results):
+        return 'Christian'
+#     except Exception:
+#         return 'Rui'
     return 'Rui'
 
 def _get_prediction(json_data):
     global img_num
+    
+    t0 = time.time()
+
     image = json_data['photo']
     decoded_image = base64.b64decode(image)
     bytes_image = BytesIO(decoded_image)
     pil_image = Image.open(bytes_image)
     
+    t1 = time.time()
+    
+    print("time processing image", t0-t1)
+
+    t0 = time.time()
     pil_image.save('phone_img_before_crop.jpg')
-#     face_locations = face_recognition.face_locations(img_arr)
-#     top, right, bottom, left = face_locations[0]
-#     pil_image = pil_image.crop((left, top, right, bottom))
-#     pil_image.save('phone_img_after_crop.jpg')
-
-
-#     pil_image = pil_image.resize((IMG_SIZE, IMG_SIZE))
-#     img_arr = np.array(pil_image)
-    face_recognition.load_image_file("phone_img_before_crop.jpg")
-    try:
-        face_encoding = face_recognition.face_encodings(img_arr)[0]
-    except Exception as e:
-        return 'Rui'
-#     print("face_recognition.face_encodings")
-#     img_vec = np.array(pil_image).ravel()
-#     img_num += 1
+    picture = face_recognition.load_image_file("phone_img_before_crop.jpg")
+    face_encoding = face_recognition.face_encodings(picture)[0]
+    t1 = time.time()
+    print("time getting encoding", t0-t1)
     prediction = get_face_class(face_encoding)
     return prediction
 
@@ -140,9 +143,8 @@ def _get_prediction(json_data):
 def classify():
     json_data = request.get_json(force=True)
     name = _get_prediction(json_data)
-#     name = preds_info[prediction]
-    # return _get_graph_api_details(name)
-    return jsonify({"name": name, "email": email_info[name], "hometown": hometown_info[name], "likes": likes_info[name], "link": fb_links[name]})
+    return _get_graph_api_details(name)
+#     return jsonify({"name": name, "email": email_info[name], "hometown": hometown_info[name], "likes": likes_info[name], "link": fb_links[name]})
 
 
 if __name__ == '__main__':
