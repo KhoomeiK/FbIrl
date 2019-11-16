@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Button, Text } from 'react-native';
 import * as Facebook from 'expo-facebook';
 import axios from 'axios';
+import EventListView from './EventListView';
 
 export default class LoginView extends Component {
   login = async () => {
@@ -16,7 +17,6 @@ export default class LoginView extends Component {
         permissions: ['public_profile', 'email', 'user_hometown', 'user_likes', 'user_link'],
       });
       if (type === 'success') {
-        // Get the user's name using Facebook's Graph API
         const response = await axios(`https://graph.facebook.com/me?access_token=${token}`);
         alert(`Hi ${response.data.name}, welcome to Facebook IRL!`);
         this.setState({ login: response.data });
@@ -27,7 +27,7 @@ export default class LoginView extends Component {
       alert(`Facebook Login Error: ${message}`);
     }
   }
-  
+
   render() {
     return (
       this.state.login ?
