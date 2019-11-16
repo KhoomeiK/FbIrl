@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import CameraExample from './CameraExample';
+import CameraView from './CameraView';
 
 export default function App() {
-  return <CameraExample />;
+  return <CameraView />;
   // <View style={styles.container}>
   //   <Text>Welcome to Facebook IRL</Text>
   // </View>
