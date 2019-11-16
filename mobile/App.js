@@ -5,21 +5,10 @@ import LoginView from './LoginView';
 import Swiper from 'react-native-swiper';
 
 export default function App() {
-  // return <LoginView />;
-  // return <CameraView />;
   return (
     <Swiper loop={false}>
-      <CameraView />
       <LoginView />
+      <CameraView />
     </Swiper>
   )
 }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });

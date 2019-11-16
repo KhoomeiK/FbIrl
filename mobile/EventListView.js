@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { FlatList, StyleSheet, Text, View, Image, ScrollView} from 'react-native';
-import { redBright } from 'ansi-colors';
-import { Card, ListItem, Button, Icon } from 'react-native-elements'
-import LinearGradient from 'react-native-linear-gradient';
+import { StyleSheet, Text, ScrollView} from 'react-native';
+// import { redBright } from 'ansi-colors';
+import { Card } from 'react-native-elements';
+// import LinearGradient from 'react-native-linear-gradient';
 
 const styles = StyleSheet.create({
     container: {
@@ -37,7 +37,7 @@ export default class EventListView extends Component {
             <Card></Card>
             {/* <LinearGradient colors={['#4c669f', '#3b5998', '#192f6a']}> */}
             <Card
-                image={require('../mobile/assets/sf.jpg')}>
+                image={require('./assets/sf.jpg')}>
                 <Text style={{textAlign:"center"}}>
                     Community Hackathon San Francisco
                 </Text>
@@ -46,25 +46,25 @@ export default class EventListView extends Component {
             
 
             <Card
-                image={require('../mobile/assets/ny.jpg')}>
+                image={require('./assets/ny.jpg')}>
                 <Text style={{textAlign:"center"}}>
                     Community Hackathon New York
                 </Text>
             </Card>
             <Card
-                image={require('../mobile/assets/chicago.jpg')}>
+                image={require('./assets/chicago.jpg')}>
                 <Text style={{textAlign:"center"}}>
                     Community Hackathon Chicago
                 </Text>
             </Card>
             <Card
-                image={require('../mobile/assets/test.png')}>
+                image={require('./assets/test.png')}>
                 <Text style={{textAlign:"center"}}>
                     Community Hackathon Antarctica
                 </Text>
             </Card>
             <Card
-                image={require('../mobile/assets/test.png')}>
+                image={require('./assets/test.png')}>
                 <Text style={{textAlign:"center"}}>
                     Community Hackathon Space
                 </Text>

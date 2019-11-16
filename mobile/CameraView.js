@@ -16,7 +16,7 @@ export default class CameraView extends React.Component {
   handleFaces = async obj => {
     if (obj.faces.length > 0 && !this.state.seeingFace) { // first time new face
       this.setState({ bounds: obj.faces[0].bounds, seeingFace: true })
-      let photo = await this.camera.takePictureAsync({ quality: 0.5, base64: true })
+      let photo = await this.camera.takePictureAsync({ quality: 0.25, base64: true })
 
       if (!this.state.seeingFace) // if face no longer on screen
         return
@@ -29,7 +29,6 @@ export default class CameraView extends React.Component {
         height: this.state.bounds.size.height
       }
       let data = await axios.post('http://bdc01c4b.ngrok.io/classify', content, { timeout: 30000 })
-      // await axios.post('https://772f1374.ngrok.io/classify', content) // TESTING ADIL
       console.log(data.data)
       this.setState({ personData: data.data })
     }

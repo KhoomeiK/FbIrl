@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { View, Button, Text } from 'react-native';
+import { View, Button, Text, Image } from 'react-native';
 import * as Facebook from 'expo-facebook';
 import axios from 'axios';
 import EventListView from './EventListView';
 
 export default class LoginView extends Component {
+  state = { };
+
   login = async () => {
     try {
       const {
@@ -37,6 +39,7 @@ export default class LoginView extends Component {
           justifyContent: 'center',
           alignItems: 'center'
         }}>
+          <Image source={require('./assets/logo.png')} style={{width: 200, height: 200, marginBottom: 100}} />
           <Text style={{ fontSize: 40 }}>Login to Facebook</Text>
           <Text style={{ fontSize: 20, marginBottom: 20 }}>to access premiere events near you!</Text>
           <Button style={{ borderRadius: 40 }} onPress={async () => await this.login()} title="Login to Facebook!" />
