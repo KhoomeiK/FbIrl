@@ -10,44 +10,28 @@ export default class CameraExample extends React.Component {
   state = {
     hasCameraPermission: null,
     type: Camera.Constants.Type.back,
-
   };
-
-  setStateAsync = state => {
-    return new Promise(resolve => {
-      this.setState(state, resolve)
-    });
-  }
-
-  snap = async () => {
-    if (this.camera) {
-      let photo = await this.camera.takePictureAsync({ quality: 0.5 })
-      console.log(photo)
-      this.setState({ captured: photo })
-    }
-  }
 
   handleFaces = async obj => {
     if (obj.faces.length > 0 && !this.state.seeingFace) { // first time new face
-      await this.setStateAsync({ bounds: obj.faces[0].bounds, seeingFace: true })
-      console.log(this.state.bounds, this.state.seeingFace)
-      await this.snap()
+      this.setState({ bounds: obj.faces[0].bounds, seeingFace: true })
+      let photo = await this.camera.takePictureAsync({ quality: 0.5, base64: true })
       let content = {
-        photo: this.state.captured.base64,
+        photo: photo.base64,
         x: this.state.bounds.origin.x,
         y: this.state.bounds.origin.y,
         width: this.state.bounds.size.width,
         height: this.state.bounds.size.height
       }
-      await axios.post('IP', content, () => console.log("You're ready for AR!")); // SET THIS IP
+      let data = await axios.post('http://bdc01c4b.ngrok.io/classify', content)
+      console.log(data.data)
     }
-    // else if (obj.faces.length > 0) { // continuing to adjust to new face
-    //   await this.setStateAsync({ bounds: obj.faces[0].bounds })
-    //   console.log(this.state.bounds)
-    // } 
+    else if (obj.faces.length > 0) { // continuing to adjust to new face
+      this.setState({ bounds: obj.faces[0].bounds })
+      // console.log(this.state.bounds)
+    }
     else if (obj.faces.length === 0 && this.state.seeingFace) { // first time no face visible
-      await this.setStateAsync({ seeingFace: false })
-      console.log(obj.faces.length, this.state.seeingFace)
+      this.setState({ seeingFace: false })
     }
   }
 
