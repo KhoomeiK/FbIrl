@@ -2052,6 +2052,11 @@ expo-face-detector@^7.0.0:
   resolved "https://registry.yarnpkg.com/expo-face-detector/-/expo-face-detector-7.0.0.tgz#e17be4e465e99b855eb0dd125ac063baeb9228e6"
   integrity sha512-fbMOb1VlZaPbwR/po/o/8icASNXkVP9DQXVVck20nAiu6HjUMPouLQTa4sDGgWgG5tabXKQQCElHvj30UQzCMg==
 
+expo-facebook@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/expo-facebook/-/expo-facebook-7.0.0.tgz#532b42d67ec91df051fa1f41ee8a1322154fba2b"
+  integrity sha512-R/ogRMxFqUCh08f575IR8aPy8q5463E5Sg/Ef7nasuqKKh1tEcVh4JoRXN3pEnZ9hivnRsXvJOchmPsy+L1upw==
+
 expo-file-system@~7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/expo-file-system/-/expo-file-system-7.0.0.tgz#ac98233b18774cce299fffd9451f08f21b116564"
@@ -4193,7 +4198,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2:
+prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -4287,6 +4292,11 @@ react-native-branch@~3.0.1:
   resolved "https://registry.yarnpkg.com/react-native-branch/-/react-native-branch-3.0.1.tgz#5b07b61cbd290168cd3c3662e017ebe0f356d2ca"
   integrity sha512-vbcYxPZlpF5f39GAEUF8kuGQqCNeD3E6zEdvtOq8oCGZunHXlWlKgAS6dgBKCvsHvXgHuMtpvs39VgOp8DaKig==
 
+react-native-fbsdk@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-fbsdk/-/react-native-fbsdk-1.1.1.tgz#91a787a046bc90d29907a2269321191cd301517c"
+  integrity sha512-1hlOeQ8rXOYXd7/XKvKXKOsURxHi4EbHWCZO1aIWQWO6pdyK1i/56KuC9KDTGo8TjNTFfA/2H5vJCG040gI75Q==
+
 react-native-svg@^9.13.3:
   version "9.13.3"
   resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-9.13.3.tgz#6414b337d55af169ac2487ab70f3108404434446"
@@ -4294,6 +4304,13 @@ react-native-svg@^9.13.3:
   dependencies:
     css-select "^2.0.2"
     css-tree "^1.0.0-alpha.37"
+
+react-native-swiper@^1.5.14:
+  version "1.5.14"
+  resolved "https://registry.yarnpkg.com/react-native-swiper/-/react-native-swiper-1.5.14.tgz#1c6f949ca377186300f972bb0f30d24062c899aa"
+  integrity sha512-Kn0fxKooN7Shwu1qJYHB+Y8ssXXnvrIwReHXU5jCdyYNfz2QbBv0Cv3sa2Mqzr+XgzORCFFIokc8uCCUITDrVA==
+  dependencies:
+    prop-types "^15.5.10"
 
 react-native-view-shot@2.6.0:
   version "2.6.0"

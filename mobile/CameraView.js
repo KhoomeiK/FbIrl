@@ -28,7 +28,8 @@ export default class CameraView extends React.Component {
         width: this.state.bounds.size.width,
         height: this.state.bounds.size.height
       }
-      let data = await axios.post('http://bdc01c4b.ngrok.io/classify', content)
+      let data = await axios.post('http://bdc01c4b.ngrok.io/classify', content, { timeout: 30000 })
+      // await axios.post('https://772f1374.ngrok.io/classify', content) // TESTING ADIL
       console.log(data.data)
       this.setState({ personData: data.data })
     }
