@@ -1,5 +1,7 @@
 from flask import Flask, request, jsonify
 from PIL import Image
+from io import BytesIO
+import base64
 from sklearn.externals import joblib
 import numpy as np
 import json
@@ -25,13 +27,15 @@ def hello_world():
 
 @app.route('/classify', methods=['POST'])
 def classify():
-    image = request.files['photo']
-    pil_image = Image.open(image)
-    print(request)
-    left = int(request.form.get('x'))
-    upper = int(request.form.get('y'))
-    right = int(request.form.get('width')) + left
-    lower = int(request.form.get('height')) + upper 
+    json_data = request.get_json(force=True)
+    image = json_data['photo']
+    decoded_image = base64.b64decode(image)
+    bytes_image = BytesIO(decoded_image)
+    pil_image = Image.open(bytes_image)
+    left = int(json_data['x'])
+    upper = int(json_data['y'])
+    right = int(json_data['width']) + left
+    lower = int(json_data['height']) + upper 
     pil_image = pil_image.crop((left, upper, right, lower))
     pil_image = pil_image.resize((IMG_SIZE, IMG_SIZE))
     img_vec = img_to_vec(pil_image)
@@ -41,4 +45,4 @@ def classify():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, use_debugger=False, use_reloader=False, passthrough_errors=True)
+    app.run(debug=True, use_debugger=True, use_reloader=True, passthrough_errors=True)
