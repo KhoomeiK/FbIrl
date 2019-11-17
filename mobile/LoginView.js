@@ -40,8 +40,8 @@ export default class LoginView extends Component {
                     alignItems: 'center',
                     backgroundColor: '#3b5998'
                 }}>
-                    <Image source={require('./assets/logo.png')} style={{width: 200, height: 200, marginBottom: 100}}/>
-                    <Text style={{fontSize: 18, marginBottom: 20, color: 'white', fontfamily: 'Roboto'}} >
+                    <Image source={require('./assets/logo.png')} style={{width: 200, height: 200, marginBottom: 20}}/>
+                    <Text style={{fontSize: 18, marginBottom: 100, color: 'white'}} >
                         The AR social network for real connections.
                     </Text>
                     <Button
@@ -50,12 +50,13 @@ export default class LoginView extends Component {
                             borderColor: 'rgba(0,0,0,0.2)',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            width: 150,
-                            height: 150,
-                            borderRadius: 150,
-                            fontFamily: 'Roboto'
+                            width: 200,
+                            height: 200,
+                            borderRadius: '8px',
+                            fontFamily: 'Roboto',
+                            color: 'white'
                         }}
-                        color={'#f7f7f7'}
+                        color={'#8b9dc3'}
                         title={'Continue with Facebook'}
                         onPress={async () => await this.login()}
                     />

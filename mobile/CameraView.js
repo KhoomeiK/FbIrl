@@ -28,7 +28,7 @@ export default class CameraView extends React.Component {
         width: this.state.bounds.size.width,
         height: this.state.bounds.size.height
       }
-      let data = await axios.post('http://bdc01c4b.ngrok.io/classify', content, { timeout: 30000 })
+      let data = await axios.post('http://9bef1386.ngrok.io/classify', content, { timeout: 30000 })
       console.log(data.data)
       this.setState({ personData: data.data })
     }
@@ -71,15 +71,16 @@ export default class CameraView extends React.Component {
                 <G onPress={this.state.personData ? async () => await WebBrowser.openBrowserAsync(this.state.personData.link) : null}>
                   <Polyline
                     points={
-                      // top left, top right, bottom right, bottom left
+                      // top left, top right, bottom right, bottom left, top left
                       `${this.state.bounds.origin.x - 100}, ${this.state.bounds.origin.y + 150} 
                     ${this.state.bounds.origin.x + this.state.bounds.size.width + 100}, ${this.state.bounds.origin.y + 150} 
                     ${this.state.bounds.origin.x + this.state.bounds.size.width + 100}, ${this.state.bounds.origin.y + this.state.bounds.size.height + 250} 
-                    ${this.state.bounds.origin.x - 100}, ${this.state.bounds.origin.y + this.state.bounds.size.height + 250}`
+                    ${this.state.bounds.origin.x - 100}, ${this.state.bounds.origin.y + this.state.bounds.size.height + 250}
+                    ${this.state.bounds.origin.x - 100}, ${this.state.bounds.origin.y + 150} `
                     }
-                    fill="rgb(66,103,178)"
-                    stroke="none"
-                    strokeWidth="0"
+                    fill="#8b9dc3"
+                    stroke="#3b5998"
+                    strokeWidth="2"
                     fillOpacity="0.8"
                   />
                   {this.state.personData ?
