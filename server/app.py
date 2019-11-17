@@ -125,6 +125,7 @@ def _get_prediction(json_data):
     decoded_image = base64.b64decode(image)
     bytes_image = BytesIO(decoded_image)
     pil_image = Image.open(bytes_image)
+    pil_image = pil_image.resize((512, 909))
 #     pil_image.save('phone_img_before_crop.jpg')
     picture = np.array(pil_image)
 #     picture = face_recognition.load_image_file("phone_img_before_crop.jpg")
