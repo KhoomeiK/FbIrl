@@ -22,6 +22,8 @@ model = joblib.load('model/classifier.pkl')
 #     2: 'Rui'
 # }
 
+
+# Fallback user data if graph API connection fails
 email_info = {
     'Adil': 'adil99@gmail.com',
     'Rui': 'raguiar@gmail.com',
@@ -56,6 +58,7 @@ SCALE_FACTOR = 5.5
 data_dir = 'model/data/rohan/'
 img_num = 1
 
+# facial embeddings
 picture_of_rui = face_recognition.load_image_file("picture_of_rui.jpg")
 rui_face_encoding = face_recognition.face_encodings(picture_of_rui)[0]
 picture_of_adil = face_recognition.load_image_file("picture_of_adil.jpg")
@@ -133,7 +136,6 @@ def _get_prediction(json_data):
 @app.route('/classify', methods=['POST'])
 def classify():
     json_data = request.get_json(force=True)
-    print("going to get preds")
     name = _get_prediction(json_data)
     return _get_graph_api_details(name)
     return jsonify({"name": name, "email": email_info[name], "hometown": hometown_info[name], "likes": likes_info[name], "link": fb_links[name]})
