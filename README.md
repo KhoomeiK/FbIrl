@@ -4,7 +4,7 @@
 - camera DONE
 - facial recognition DONE
 - face post request png DONE
-- AR card display
+- AR card display DONE
 
 
 ## Using the server
